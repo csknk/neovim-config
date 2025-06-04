@@ -1,4 +1,4 @@
-if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
+-- if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
 
 -- Customize Mason plugins
 
@@ -30,9 +30,13 @@ return {
     "jay-babu/mason-nvim-dap.nvim",
     -- overrides `require("mason-nvim-dap").setup(...)`
     opts = {
+      handlers = {},
       ensure_installed = {
         "python",
-        -- add more arguments for adding more debuggers
+        "delve",
+      },
+      dependencies = {
+        "mfussenegger/nvim-dap",
       },
     },
   },
