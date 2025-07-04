@@ -95,10 +95,7 @@ return {
           end,
         },
         ["<leader>lR"] = {
-          function()
-            print "mapping triggered"
-            require("snacks.picker").lsp_references()
-          end,
+          function() require("snacks.picker").lsp_references() end,
           desc = "References",
         },
       },
