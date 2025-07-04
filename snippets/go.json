@@ -1,0 +1,15 @@
+{
+    "iferr": {
+        "prefix": [
+            "iferr"
+        ],
+        "body": [
+            "if err != nil {",
+            "\treturn nil, ${1:err}",
+            "}",
+            "",
+            "\t$2"
+        ],
+        "description": "My standard setup Vue3 + TS"
+    }
+}

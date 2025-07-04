@@ -1,5 +1,3 @@
--- if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
-
 -- AstroCore provides a central place to modify mappings, vim options, autocommands, and more!
 -- Configuration documentation can be found with `:h astrocore`
 -- NOTE: We highly recommend setting up the Lua Language Server (`:LspInstall lua_ls`)
@@ -11,11 +9,34 @@ return {
   ---@type AstroCoreOpts
   opts = {
     -- Configure core features of AstroNvim
+    autocmds = {
+      shell_template = {
+        {
+          event = "BufNewFile",
+          desc = "Insert bash skeleton for .sh files",
+          callback = function(args)
+            local buf = args.buf
+            local fname = vim.api.nvim_buf_get_name(buf)
+
+            if fname:match "%.sh$" and vim.fn.filereadable(fname) == 0 and not vim.b[buf].skeleton_added then
+              local lines = vim.fn.readfile "/home/david/.config/nvim/skeleton/bash.sh"
+              vim.api.nvim_buf_set_lines(buf, 0, 0, false, lines)
+              vim.api.nvim_buf_call(buf, function()
+                vim.cmd "normal! G"
+                vim.cmd "startinsert"
+              end)
+              vim.b[buf].skeleton_added = true
+            end
+          end,
+        },
+      },
+    },
+
     features = {
       large_buf = { size = 1024 * 256, lines = 10000 }, -- set global limits for large files for disabling features like treesitter
       autopairs = true, -- enable autopairs at start
       cmp = true, -- enable completion at start
-      diagnostics_mode = 3, -- diagnostic mode on start (0 = off, 1 = no signs/virtual text, 2 = no virtual text, 3 = on)
+      diagnostics = { virtual_text = true, virtual_lines = false }, -- diagnostic settings on startup
       highlighturl = true, -- highlight URLs at start
       notifications = true, -- enable notifications at start
     },
@@ -24,6 +45,19 @@ return {
       virtual_text = true,
       underline = true,
     },
+    -- passed to `vim.filetype.add`
+    filetypes = {
+      -- see `:h vim.filetype.add` for usage
+      extension = {
+        foo = "fooscript",
+      },
+      filename = {
+        [".foorc"] = "fooscript",
+      },
+      pattern = {
+        [".*/etc/foo/.*"] = "fooscript",
+      },
+    },
     -- vim options can be configured here
     options = {
       opt = { -- vim.opt.<key>
@@ -31,11 +65,7 @@ return {
         number = true, -- sets vim.opt.number
         spell = false, -- sets vim.opt.spell
         signcolumn = "yes", -- sets vim.opt.signcolumn to yes
-        -- added 14-04-2025
-        wrap = true, -- sets vim.opt.wrap
-        tabstop = 4,
-        shiftwidth = 4, -- when indenting with '>', use 4 spaces width
-        softtabstop = 4,
+        wrap = false, -- sets vim.opt.wrap
       },
       g = { -- vim.g.<key>
         -- configure global vim variables (vim.g)
@@ -53,13 +83,15 @@ return {
         -- navigate buffer tabs
         ["]b"] = { function() require("astrocore.buffer").nav(vim.v.count1) end, desc = "Next buffer" },
         ["[b"] = { function() require("astrocore.buffer").nav(-vim.v.count1) end, desc = "Previous buffer" },
+
         -- echo filepath
-        ["<Leader>fp"] = {
+        ["<Leader>pp"] = {
           "<cmd>echo expand('%:p')<cr>",
           desc = "Get filepath",
         },
+
         ["<leader>fd"] = {
-          function() require("telescope.builtin").find_files { cwd = "~/.config/nvim/docs" } end,
+          function() require("snacks.picker").files { cwd = vim.fn.expand "~/.config/nvim/docs" } end,
           desc = "Find Vim docs",
         },
 
@@ -72,8 +104,11 @@ return {
           end,
           desc = "Close buffer from tabline",
         },
+
         -- tables with just a `desc` key will be registered with which-key if it's installed
         -- this is useful for naming menus
+        -- ["<Leader>b"] = { desc = "Buffers" },
+
         -- setting a mapping to false will disable it
         -- ["<C-S>"] = false,
       },
