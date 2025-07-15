@@ -1,6 +1,7 @@
 local ls = require "luasnip"
 local s = ls.snippet
 local sn = ls.snippet_node
+local rep = require("luasnip.extras").rep
 -- local isn = ls.indent_snippet_node
 local t = ls.text_node
 local i = ls.insert_node
@@ -10,6 +11,77 @@ local c = ls.choice_node
 -- local r = ls.restore_node
 local fmt = require("luasnip.extras.fmt").fmt
 return {
+  s(
+    "iota",
+    fmt(
+      [[
+const (
+	{} {} = iota
+	{}
+)
+]],
+      {
+        i(1, "VariantName1"),
+        i(2, "MyType"),
+        i(3, "VariantName2"),
+      }
+    )
+  ),
+  s(
+    "enum",
+    fmt(
+      [[
+type {} int
+
+const (
+	{} {} = iota
+	{}
+)
+]],
+      {
+        i(1, "MyType"), -- type name
+        i(2, "Short"), -- first constant
+        rep(1), -- reuse the type name
+        i(3, "Long"), -- second constant
+      }
+    )
+  ),
+  s(
+    "unmarshalmap",
+    fmt(
+      [[
+	var {} map[string]any
+	if err := json.Unmarshal(*{}, &{}); err != nil {{
+		log.Fatalf("failed to unmarshal {}: %v", err)
+	}}
+]],
+      {
+        i(1, "dest"),
+        i(2, "jsonResult"),
+        rep(1),
+        i(3, "dest"),
+      }
+    )
+  ),
+  s(
+    "unmarshal",
+    fmt(
+      [[
+	var {} {}
+	if err := json.Unmarshal(*{}, &{}); err != nil {{
+		log.Fatalf("failed to unmarshal {}: %v", err)
+	}}
+]],
+      {
+        i(1, "obj"),
+        i(2, "MyStruct"),
+        i(3, "data"),
+        rep(1),
+        i(1),
+      }
+    )
+  ),
+
   s("ticker", {
     t { "tickerInterval := " },
     i(1, "1"),
