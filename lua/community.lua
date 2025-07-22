@@ -12,5 +12,5 @@ return {
   { import = "astrocommunity.pack.rust" },
   { import = "astrocommunity.pack.python" },
   { import = "astrocommunity.pack.go" },
-  -- { import = "astrocommunity.recipes.telescope-lsp-mappings" },
+  -- { import = "astrocommunity.lsp.nvim-lint" },
 }
