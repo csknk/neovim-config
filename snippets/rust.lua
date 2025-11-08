@@ -1,10 +1,21 @@
 local ls = require "luasnip"
 local s = ls.snippet
+local t = ls.text_node
 local i = ls.insert_node
 local fmt = require("luasnip.extras.fmt").fmt
 local rep = require("luasnip.extras").rep
 
 return {
+  s({ trig = "for", dscr = "`for _ in _` loop", priority = 5000 }, {
+    t { "for " },
+    i(1, "pat"),
+    t { " in " },
+    i(2, "expr"),
+    t { " {", "\t" },
+    -- t { '	' },
+    i(0),
+    t { "", "}" },
+  }),
   s(
     "newR",
     fmt(

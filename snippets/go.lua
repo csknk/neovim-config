@@ -11,6 +11,12 @@ local c = ls.choice_node
 -- local r = ls.restore_node
 local fmt = require("luasnip.extras.fmt").fmt
 return {
+  s("sigctx", {
+    t {
+      "ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)",
+      "defer stop()",
+    },
+  }),
   s(
     "iota",
     fmt(
@@ -314,6 +320,25 @@ const (
         i(1, "processInputReturnAsJSON"), -- function name
         i(2, "Payload"), -- request payload type
         i(3, "ResponsePayload"), -- response payload type
+      }
+    )
+  ),
+  s(
+    { trig = "sb", dscr = "strings.Builder scaffold" },
+    fmt(
+      [[
+    var {} strings.Builder
+    {}.WriteString("#")
+    {}.WriteString(strconv.Itoa({}))
+    {} := {}.String()
+    ]],
+      {
+        i(1, "builder"),
+        rep(1),
+        rep(1),
+        t "42",
+        i(2, "str1"),
+        rep(1),
       }
     )
   ),

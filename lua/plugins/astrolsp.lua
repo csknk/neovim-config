@@ -46,7 +46,6 @@ return {
     ---@diagnostic disable: missing-fields
     config = {
       -- clangd = { capabilities = { offsetEncoding = "utf-8" } },
-      -- markdownlint = { extra_args = { "--config", vim.fn.expand "/home/david/.config/nvim/.markdownlint.yaml", "--" } },
     },
     -- customize how language servers are attached
     handlers = {
@@ -95,9 +94,15 @@ return {
             return client.supports_method "textDocument/semanticTokens/full" and vim.lsp.semantic_tokens ~= nil
           end,
         },
-        ["<leader>lR"] = {
+        -- vim.api.nvim_set_keymap('n', '<leader>lR', '<cmd>lua require("snacks.picker").lsp_references()<CR>', { noremap = true, silent = true })
+        -- ["<leader>lR"] = false,
+        ["<Leader>lR"] = {
           function() require("snacks.picker").lsp_references() end,
           desc = "References",
+        },
+        ["<Leader>lx"] = {
+          function() require("snacks.picker").lsp_implementations() end,
+          desc = "Navigate to/from Implementations",
         },
       },
     },

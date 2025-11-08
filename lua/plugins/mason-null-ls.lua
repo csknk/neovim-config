@@ -17,7 +17,8 @@ return {
         markdownlint = function()
           local null_ls = require "null-ls"
           null_ls.register(null_ls.builtins.diagnostics.markdownlint.with {
-            extra_args = { "--config", "~/.markdownlint.yaml" },
+            -- extra_args = { "--config", "~/.markdownlint.yaml" },
+            extra_args = { "--config", "/home/david/.config/nvim/.markdownlint.yaml" },
           })
         end,
       }
