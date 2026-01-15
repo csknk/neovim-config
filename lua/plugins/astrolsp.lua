@@ -87,6 +87,31 @@ return {
           desc = "Declaration of current symbol",
           cond = "textDocument/declaration",
         },
+
+        gd = {
+          function() require("snacks").picker.lsp_definitions() end,
+          desc = "Go to definition",
+          cond = "textDocument/definition",
+        },
+
+        gi = {
+          function() require("snacks").picker.lsp_implementations() end,
+          desc = "Go to implementation",
+          cond = "textDocument/implementation",
+        },
+
+        grr = {
+          function() require("snacks.picker").lsp_references() end,
+          desc = "Find references",
+          -- cond = "textDocument/references",
+        },
+
+        gy = {
+          function() require("snacks").picker.lsp_type_definitions() end,
+          desc = "Go to type definition",
+          cond = "textDocument/typeDefinition",
+        },
+
         ["<Leader>uY"] = {
           function() require("astrolsp.toggles").buffer_semantic_tokens() end,
           desc = "Toggle LSP semantic highlight (buffer)",

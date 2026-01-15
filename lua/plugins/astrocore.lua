@@ -112,6 +112,11 @@ return {
         -- setting a mapping to false will disable it
         -- ["<C-S>"] = false,
       },
+      -- x = {
+      --   -- Keep your last yank intact when pasting over a selection
+      --   ["p"] = { '"_dP', desc = "Paste without clobbering unnamed register" },
+      --   ["P"] = { '"_dP', desc = "Paste without clobbering unnamed register" },
+      -- },
     },
   },
 }
