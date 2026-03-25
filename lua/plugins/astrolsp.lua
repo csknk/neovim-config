@@ -97,7 +97,12 @@ return {
         gi = {
           function() require("snacks").picker.lsp_implementations() end,
           desc = "Go to implementation",
-          cond = "textDocument/implementation",
+          -- cond = "textDocument/implementation",
+        },
+
+        gri = {
+          function() require("snacks").picker.lsp_implementations() end,
+          desc = "Go to implementations",
         },
 
         grr = {
@@ -119,15 +124,21 @@ return {
             return client.supports_method "textDocument/semanticTokens/full" and vim.lsp.semantic_tokens ~= nil
           end,
         },
-        -- vim.api.nvim_set_keymap('n', '<leader>lR', '<cmd>lua require("snacks.picker").lsp_references()<CR>', { noremap = true, silent = true })
-        -- ["<leader>lR"] = false,
+
         ["<Leader>lR"] = {
           function() require("snacks.picker").lsp_references() end,
           desc = "References",
         },
+
         ["<Leader>lx"] = {
           function() require("snacks.picker").lsp_implementations() end,
           desc = "Navigate to/from Implementations",
+        },
+
+        ["<Leader>tr"] = {
+          function() vim.lsp.codelens.run() end,
+          cond = "textDocument/declaration",
+          desc = "Run test",
         },
       },
     },

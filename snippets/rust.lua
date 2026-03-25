@@ -2,10 +2,84 @@ local ls = require "luasnip"
 local s = ls.snippet
 local t = ls.text_node
 local i = ls.insert_node
+local c = ls.choice_node
 local fmt = require("luasnip.extras.fmt").fmt
 local rep = require("luasnip.extras").rep
 
 return {
+  s(
+    "rstruct",
+    fmt(
+      [[
+#[derive(Debug)]
+{}struct {} {{
+    {}: {},
+}}
+]],
+      {
+        -- Optional pub before struct
+        c(1, {
+          t "",
+          t "pub ",
+        }),
+
+        -- Struct name
+        i(2, "MyStruct"),
+
+        -- Field name
+        i(3, "field"),
+
+        -- Field type
+        i(4, "Type"),
+      }
+    )
+  ),
+  s(
+    "openfunc",
+    fmt(
+      [[
+use std::fs::OpenOptions;
+use std::io::{{{{self, Write}}}};
+
+fn {}() -> std::io::Result<()> {{{{
+    let mut file = OpenOptions::new()
+        .append(true)
+        .create(true)
+        .open({})?;
+
+    writeln!(file, "{}")?;
+
+    Ok(())
+}}}}
+]],
+      {
+        i(1, "append_to_file"),
+        i(2, '"path/to/file.txt"'),
+        i(3, "some text"),
+      }
+    )
+  ),
+  s(
+    "openf",
+    fmt(
+      [[
+use std::fs::OpenOptions;
+use std::io;
+
+let file = OpenOptions::new()
+    .append(true)
+    .create(true)
+    .open({})
+    ?;
+
+{}
+]],
+      {
+        i(1, '"path/to/file.txt"'),
+        i(0),
+      }
+    )
+  ),
   s({ trig = "for", dscr = "`for _ in _` loop", priority = 5000 }, {
     t { "for " },
     i(1, "pat"),
